@@ -40,8 +40,10 @@ cef_branch_number=4472
 # for the branch you are building - for example:
 # https://bitbucket.org/chromiumembedded/cef/commits/branch/4472 and pick the
 # commit hash the looks sensible - often something like "Update to Chromium
-# version xx.x.xxxx.xx" - this hash represents verion 91.0.4472.114
-cef_commit_hash=9dd45fe
+# version xx.x.xxxx.xx".
+# This hash represents CEF version 100.0.4896.75
+# https://bitbucket.org/chromiumembedded/cef/commits/4e5ba663020c10d5fdc02732918cb3b4a2bc13c8
+cef_commit_hash=4e5ba66
 
 # Turn on the proprietary codec support (the main reason for building from source vs using
 # the Spotify open source builds here http://opensource.spotify.com/cefbuilds/index.html)
