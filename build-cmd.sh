@@ -33,7 +33,7 @@ cef_stage_dir="${stage}/cef"
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-release-branches
 # as can this one: https://www.chromium.org/developers/calendar
 # E.G. Branch 4472 represents Chromium/CEF 91.x
-cef_branch_number=4472
+cef_branch_number=4896
 
 # The commit hash in the branch we want to
 # check out from. One way to determine the hash to use is to look at the commits
