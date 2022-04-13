@@ -52,17 +52,23 @@ cef_commit_hash=4e5ba66
 # Twitch and YouTube live streams.
 use_proprietary_codecs=1
 
-# Load autobuild provided shell functions and variables
-source_environment_tempfile="$stage/source_environment.sh"
-"$AUTOBUILD" source_environment > "$source_environment_tempfile"
-. "$source_environment_tempfile"
-
 # used in VERSION.txt but common to all bit-widths and platforms
 build=${AUTOBUILD_BUILD_ID:=0}
 
 case "$AUTOBUILD_PLATFORM" in
     windows*)
-        load_vsvars
+        # this is needed to obviate an error later in the script within
+        # the CEF build itself
+        set PYTHONIOENCODING=UTF-8
+
+        #load_vsvars
+        # Note that we do not invoke "autobuild source_environment > file"
+        # and therefore no not (cannot) call load_vsvars here as normal.
+        # Only for Windows builds since that swells the environment to such a 
+        # degree that we run out of space for it and everything fails.
+        # All of the settings that would have been applied are not needed
+        # since we are primarily using build.bat to do the heavy lifting.
+
         # This is a windows path to the directory where Chromium/CEF will be built. The
         # official build process has some rules about this name - the most important of which
         # is that it cannot have spaces and must be "less than 35 chars" - using a sub-directory
@@ -128,6 +134,13 @@ case "$AUTOBUILD_PLATFORM" in
     ;;
 
     darwin64)
+        # Load autobuild provided shell functions and variables
+        # We place it here and not in scope for all builds since 
+        # it is only useful on macOS and breaks Windows builds
+        source_environment_tempfile="$stage/source_environment.sh"
+        "$AUTOBUILD" source_environment > "$source_environment_tempfile"
+        . "$source_environment_tempfile"
+
         # the directory where CEF is built. The documentation suggests that on
         # Windows at least, this shouldn't be in a subdirectory since the
         # complex build process generates enormous path names. This means we
