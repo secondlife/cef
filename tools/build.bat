@@ -134,13 +134,13 @@
 @cd %ROOT_CODE_DIRECTORY%\chromium_git
 
 @rem Settings taking from the Chromium/CEF Master Build Page.
-@set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
+@set GN_ARGUMENTS=--ide=vs2019 --sln=cef --filters=//cef/*
 
 @rem Not everyone wants the official media codec support
 @set GN_DEFINES=is_official_build=true
 @if "%PROPRIETARY_CODEC%"=="1" (set GN_DEFINES=is_official_build=true proprietary_codecs=true ffmpeg_branding=Chrome)
 
-set GYP_MSVS_VERSION=2017
+set GYP_MSVS_VERSION=2019
 
 @rem specifiy that the final build result is a .tar.bz2 archive vs zip
 @set CEF_ARCHIVE_FORMAT=tar.bz2
