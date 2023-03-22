@@ -30,18 +30,17 @@ cef_stage_dir="${stage}/cef"
 # The CEF branch number you want to build
 # The relationship to Chrome and the versions of Chromium/CEF is complex and
 # can make it difficult to find the branch number to use. This page can help:
-# https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-release-branches
-# as can this one: https://www.chromium.org/developers/calendar
-# E.G. Branch 4472 represents Chromium/CEF 91.x
-cef_branch_number=4472
+# https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
+# E.G. Branch 5563 represents Chromium/CEF 111.x
+cef_branch_number=5563
 
 # The commit hash in the branch we want to
 # check out from. One way to determine the hash to use is to look at the commits
 # for the branch you are building - for example:
-# https://bitbucket.org/chromiumembedded/cef/commits/branch/4472 and pick the
+# https://bitbucket.org/chromiumembedded/cef/commits/branch/5563 and pick the
 # commit hash the looks sensible - often something like "Update to Chromium
-# version xx.x.xxxx.xx" - this hash represents verion 91.0.4472.114
-cef_commit_hash=9dd45fe
+# version xx.x.xxxx.xx" - this hash represents verion 111.0.5563.65
+cef_commit_hash=1b83ff6
 
 # Turn on the proprietary codec support (the main reason for building from source vs using
 # the Spotify open source builds here http://opensource.spotify.com/cefbuilds/index.html)
@@ -163,6 +162,9 @@ case "$AUTOBUILD_PLATFORM" in
         # create .tar.bz2 format package archives
         export CEF_ARCHIVE_FORMAT=tar.bz2
 
+        # (CEF author mgreenblat asserts this allows for intel build on arm macs)
+        export CEF_ENABLE_AMD64=1
+
         # the location of the distributable files is based on the long, complex CEF/Chromium
         # version numbers and that makes it difficult to deduce and find so we invoke the
         # automate-git.py option to set the sub-dir ourselves
@@ -175,14 +177,15 @@ case "$AUTOBUILD_PLATFORM" in
         # to turn off debug builds since doing so produces a build result that is not
         # compatible with autobuild and packages that consume it downstream.
         cd "$cef_build_dir/code/chromium_git"
-        python ../automate/automate-git.py \
+        python3 ../automate/automate-git.py \
             --download-dir="$cef_build_dir/code/chromium_git" \
             --depot-tools-dir="$cef_build_dir/code/depot_tools" \
             --branch="$cef_branch_number" \
             --checkout="$cef_commit_hash" \
             --client-distrib \
             --x64-build \
-            --distrib-subdir="$cef_distrib_subdir"
+            --distrib-subdir="$cef_distrib_subdir" \
+            --with-pgo-profiles
 
         # copy over the bits of the build we need to package
         cp -R "$cef_build_dir/code/chromium_git/chromium/src/cef/binary_distrib/$cef_distrib_subdir/" "$cef_stage_dir/"
