@@ -4,11 +4,11 @@
 exec 4>&1; export BASH_XTRACEFD=4; set -x
 
 # check command line arguments
-if [ $# != 3 ]
+if [ $# != 2 ]
 then
     {
         echo -e "\nUsage:"
-        echo -e "    $0 <CEF branch number> <commit hash> <CEF build dir>"
+        echo -e "    $0 <CEF branch number> <CEF build dir>"
     } 2> /dev/null
     exit 1
 fi
@@ -21,18 +21,9 @@ fi
 # E.G. Branch 4472 represents Chromium/CEF 91.x
 cef_branch_number=$1
 
-# The second command line parameter is the commit hash in the branch we want to
-# check out from. One way to determine the hash to use is to look at the commits
-# for the branch you are building - for example:
-# https://bitbucket.org/chromiumembedded/cef/commits/branch/3987 and pick the
-# commit hash the looks sensible - often something like "bumped CEF/Chromium
-# to version x.xx.xx"
-# E.G. branch 4472, commit 9dd45fe defines CEF version 91.0.4472.114
-cef_commit_hash=$2
-
 # The third command line parameter is the directory you want to use to build
 # Chromium and CEF. It must not exist already.
-cef_build_dir=$3
+cef_build_dir=$2
 
 # we stipulate that the parent build dir must be empty
 if [ -d "$cef_build_dir" ];
@@ -105,7 +96,6 @@ python ../automate/automate-git.py \
     --download-dir="$cef_build_dir/code/chromium_git" \
     --depot-tools-dir="$cef_build_dir/code/depot_tools" \
     --branch="$cef_branch_number" \
-    --checkout="$cef_commit_hash" \
     --client-distrib \
     --x64-build \
     --distrib-subdir="$cef_distrib_subdir" \
