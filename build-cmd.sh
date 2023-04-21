@@ -31,16 +31,8 @@ cef_stage_dir="${stage}/cef"
 # The relationship to Chrome and the versions of Chromium/CEF is complex and
 # can make it difficult to find the branch number to use. This page can help:
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
-# E.G. Branch 5563 represents Chromium/CEF 111.x
-cef_branch_number=5563
-
-# The commit hash in the branch we want to
-# check out from. One way to determine the hash to use is to look at the commits
-# for the branch you are building - for example:
-# https://bitbucket.org/chromiumembedded/cef/commits/branch/5563 and pick the
-# commit hash the looks sensible - often something like "Update to Chromium
-# version xx.x.xxxx.xx" - this hash represents verion 111.0.5563.65
-cef_commit_hash=1b83ff6
+# E.G. Branch 5615 represents Chromium/CEF 112.x
+cef_branch_number=5615
 
 # Turn on the proprietary codec support (the main reason for building from source vs using
 # the Spotify open source builds here http://opensource.spotify.com/cefbuilds/index.html)
@@ -90,7 +82,6 @@ case "$AUTOBUILD_PLATFORM" in
                     $AUTOBUILD_ADDRSIZE \
                     $use_proprietary_codecs \
                     $cef_branch_number \
-                    $cef_commit_hash \
                     $cef_distrib_subdir
 
         # copy over the bits of the build we need to package
@@ -181,7 +172,6 @@ case "$AUTOBUILD_PLATFORM" in
             --download-dir="$cef_build_dir/code/chromium_git" \
             --depot-tools-dir="$cef_build_dir/code/depot_tools" \
             --branch="$cef_branch_number" \
-            --checkout="$cef_commit_hash" \
             --client-distrib \
             --x64-build \
             --distrib-subdir="$cef_distrib_subdir" \

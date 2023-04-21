@@ -29,10 +29,9 @@
 @set DEFAULT_BIT_WIDTH=64
 @set DEFAULT_PROPRIETARY_CODEC=1
 
-@rem https://bitbucket.org/chromiumembedded/cef/commits/branch/4472
-@rem Version 91.0.4472.114
-@set DEFAULT_BRANCH=4472
-@set DEFAULT_CEF_COMMIT_HASH="9dd45fe"
+@rem https://bitbucket.org/chromiumembedded/cef/commits/branch/5615
+@rem Version 111.x
+@set DEFAULT_BRANCH=5615
 
 @set DEFAULT_CEF_DISTRIB_SUBDIR="cef"
 
@@ -58,13 +57,9 @@
 @set BRANCH=%DEFAULT_BRANCH%
 @if not [%4]==[] (if not [%4]==[-] (set BRANCH=%4))
 
-@rem Pass in the commit hash to pull from as param 5 or '-' to use default
-@set CEF_COMMIT_HASH=%DEFAULT_CEF_COMMIT_HASH%
-@if not [%5]==[] (if not [%5]==[-] (set CEF_COMMIT_HASH=%5))
-
-@rem Pass in the name of the directory where the build happens as param 6 or '-' to use default
+@rem Pass in the name of the directory where the build happens as param 5 or '-' to use default
 @set CEF_DISTRIB_SUBDIR=%DEFAULT_CEF_DISTRIB_SUBDIR%
-@if not [%6]==[] ( if not [%6]==[-] (set CEF_DISTRIB_SUBDIR=%6))
+@if not [%5]==[] ( if not [%5]==[-] (set CEF_DISTRIB_SUBDIR=%5))
 
 @mkdir %ROOT_CODE_DIRECTORY%\automate
 @mkdir %ROOT_CODE_DIRECTORY%\chromium_git
@@ -134,13 +129,13 @@
 @cd %ROOT_CODE_DIRECTORY%\chromium_git
 
 @rem Settings taking from the Chromium/CEF Master Build Page.
-@set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
+@set GN_ARGUMENTS=--ide=vs2022 --sln=cef --filters=//cef/*
 
 @rem Not everyone wants the official media codec support
 @set GN_DEFINES=is_official_build=true
 @if "%PROPRIETARY_CODEC%"=="1" (set GN_DEFINES=is_official_build=true proprietary_codecs=true ffmpeg_branding=Chrome)
 
-set GYP_MSVS_VERSION=2017
+set GYP_MSVS_VERSION=2022
 
 @rem specifiy that the final build result is a .tar.bz2 archive vs zip
 @set CEF_ARCHIVE_FORMAT=tar.bz2
@@ -181,6 +176,7 @@ cd %ROOT_CODE_DIRECTORY%\chromium_git\chromium\src\cef
  --download-dir=%ROOT_CODE_DIRECTORY%\chromium_git^
  --depot-tools-dir=%ROOT_CODE_DIRECTORY%\depot_tools^
  --branch=%BRANCH%^
+ --with-pgo-profiles^
  --client-distrib^
  --distrib-subdir=%CEF_DISTRIB_SUBDIR%^
  --force-clean^
