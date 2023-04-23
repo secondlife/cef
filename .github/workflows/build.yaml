@@ -7,7 +7,7 @@ jobs:
         os: [windows-large]
         addrsize: ["64"]
         include:
-          - os: windows-2022
+          - os: windows-large
             addrsize: "32"
     continue-on-error: true
     runs-on: ${{ matrix.os }}
