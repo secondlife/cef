@@ -93,7 +93,6 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Remove files from the raw CEF build that we do not use
         rm -rf "tests"
-        rm "Debug/cef_sandbox.lib"
         rm "Release/cef_sandbox.lib"
 
         # licence file

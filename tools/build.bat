@@ -180,6 +180,9 @@ cd %ROOT_CODE_DIRECTORY%\chromium_git\chromium\src\cef
  --client-distrib^
  --distrib-subdir=%CEF_DISTRIB_SUBDIR%^
  --force-clean^
+ --no-debug-build^
+ --no-debug-tests^
+ --no-release-tests^
  %BUILD_64BIT_FLAGS%
 
 @rem Rudimentary timing
