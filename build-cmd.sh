@@ -163,9 +163,7 @@ case "$AUTOBUILD_PLATFORM" in
         # The main build script that does everything and based on command line parameter
         # (--client-distrib) also generates the distributable packages just like we used
         # to take from Spotify. Note too that unlike the Windows version, we always invoke
-        # the 64bit command line parameter. Moreover, note that we never invoke the option
-        # to turn off debug builds since doing so produces a build result that is not
-        # compatible with autobuild and packages that consume it downstream.
+        # the 64bit command line parameter
         cd "$cef_build_dir/code/chromium_git"
         python3 ../automate/automate-git.py \
             --download-dir="$cef_build_dir/code/chromium_git" \
@@ -173,6 +171,9 @@ case "$AUTOBUILD_PLATFORM" in
             --branch="$cef_branch_number" \
             --client-distrib \
             --x64-build \
+            --no-debug-build \
+            --no-debug-tests \
+            --no-release-tests \
             --distrib-subdir="$cef_distrib_subdir" \
             --with-pgo-profiles
 
@@ -184,7 +185,6 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Remove files from the raw CEF build that we do not use
         rm -rf "tests"
-        rm "Debug/cef_sandbox.a"
         rm "Release/cef_sandbox.a"
 
         # licence file
