@@ -9,6 +9,9 @@ jobs:
         include:
           - os: windows-large
             addrsize: "32"
+          - os: macos
+            tag: self-hosted
+            addrsize: "64"
     continue-on-error: true
     runs-on: ${{ matrix.os }}
     steps:
