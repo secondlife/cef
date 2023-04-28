@@ -121,6 +121,10 @@ case "$AUTOBUILD_PLATFORM" in
         # have a different location per build platform type
         cef_build_dir="${stage}/cef_build"
 
+        # Display free disk space - this seems to be the only 
+        # way to find out for the moment... 
+        df -h
+
         # base directory structure
         mkdir -p "$cef_build_dir/code"
         mkdir -p "$cef_build_dir/code/automate"
