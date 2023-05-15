@@ -31,8 +31,8 @@ cef_stage_dir="${stage}/cef"
 # The relationship to Chrome and the versions of Chromium/CEF is complex and
 # can make it difficult to find the branch number to use. This page can help:
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
-# E.G. Branch 5615 represents Chromium/CEF 112.x
-cef_branch_number=5615
+# E.G. Branch 5672 represents Chromium/CEF 113.x
+cef_branch_number=5672
 
 # Turn on the proprietary codec support (the main reason for building from source vs using
 # the Spotify open source builds here http://opensource.spotify.com/cefbuilds/index.html)
