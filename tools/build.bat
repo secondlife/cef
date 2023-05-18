@@ -29,9 +29,9 @@
 @set DEFAULT_BIT_WIDTH=64
 @set DEFAULT_PROPRIETARY_CODEC=1
 
-@rem https://bitbucket.org/chromiumembedded/cef/commits/branch/5615
-@rem Version 111.x
-@set DEFAULT_BRANCH=5615
+@rem https://bitbucket.org/chromiumembedded/cef/commits/branch/5672
+@rem Version 113.x
+@set DEFAULT_BRANCH=5672
 
 @set DEFAULT_CEF_DISTRIB_SUBDIR="cef"
 
@@ -180,7 +180,6 @@ cd %ROOT_CODE_DIRECTORY%\chromium_git\chromium\src\cef
  --client-distrib^
  --distrib-subdir=%CEF_DISTRIB_SUBDIR%^
  --force-clean^
- --no-debug-build^
  --no-debug-tests^
  --no-release-tests^
  %BUILD_64BIT_FLAGS%

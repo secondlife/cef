@@ -93,6 +93,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Remove files from the raw CEF build that we do not use
         rm -rf "tests"
+        rm "Debug/cef_sandbox.lib"
         rm "Release/cef_sandbox.lib"
 
         # licence file
@@ -171,7 +172,6 @@ case "$AUTOBUILD_PLATFORM" in
             --branch="$cef_branch_number" \
             --client-distrib \
             --x64-build \
-            --no-debug-build \
             --no-debug-tests \
             --no-release-tests \
             --distrib-subdir="$cef_distrib_subdir" \
@@ -185,6 +185,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Remove files from the raw CEF build that we do not use
         rm -rf "tests"
+        rm "Debug/cef_sandbox.a"
         rm "Release/cef_sandbox.a"
 
         # licence file
