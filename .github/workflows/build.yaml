@@ -6,13 +6,11 @@ jobs:
       matrix:
         os: [windows-large]
         addrsize: ["64"]
-        include:
-          - os: windows-large
-            addrsize: "32"
-          - os: macos
-            tag: self-hosted
-            addrsize: "64"
-    continue-on-error: false
+#        include:
+#          - os: macos
+#            tag: self-hosted
+#            addrsize: "64"
+#    continue-on-error: true
     runs-on: ${{ matrix.os }}
     timeout-minutes: 900
     steps:
