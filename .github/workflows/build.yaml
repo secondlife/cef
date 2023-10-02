@@ -7,7 +7,8 @@ jobs:
         os: [windows-large]
         addrsize: ["64"]
         include:
-          - os: macos-13-xlarge
+          - os: macos
+            tag: self-hosted
             addrsize: "64"
     continue-on-error: true
     runs-on: ${{ matrix.os }}
