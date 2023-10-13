@@ -172,7 +172,7 @@ set GYP_MSVS_VERSION=2022
 @rem list some other commands [ninja...] but those are only required if
 @rem you are editing source and don't want to make a full build each time
 cd %ROOT_CODE_DIRECTORY%\chromium_git\chromium\src\cef
-@python ..\automate\automate-git.py^
+@python3 ..\automate\automate-git.py^
  --download-dir=%ROOT_CODE_DIRECTORY%\chromium_git^
  --depot-tools-dir=%ROOT_CODE_DIRECTORY%\depot_tools^
  --branch=%BRANCH%^
