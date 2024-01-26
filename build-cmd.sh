@@ -32,7 +32,7 @@ cef_stage_dir="${stage}/cef"
 # can make it difficult to find the branch number to use. This page can help:
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
 # E.G. Branch 5993 represents Chromium/CEF 118.x
-cef_branch_number=5993
+cef_branch_number=6167
 
 # Turn on the proprietary codec support (the main reason for building from source vs using
 # the Spotify open source builds here https://cef-builds.spotifycdn.com/index.html)
@@ -114,7 +114,7 @@ case "$AUTOBUILD_PLATFORM" in
         rm "$stage"/version.{obj,exe}
     ;;
 
-    darwin64)
+    darwin64|linux64)
         # the directory where CEF is built. The documentation suggests that on
         # Windows at least, this shouldn't be in a subdirectory since the
         # complex build process generates enormous path names. This means we
@@ -158,7 +158,12 @@ case "$AUTOBUILD_PLATFORM" in
         # the location of the distributable files is based on the long, complex CEF/Chromium
         # version numbers and that makes it difficult to deduce and find so we invoke the
         # automate-git.py option to set the sub-dir ourselves
-        cef_distrib_subdir="cef_binary_macosx"
+        cef_distrib_subdir="cef_binary_$AUTOBUILD_PLATFORM"
+
+        cef_build_target="cefclient"
+        if [[ "$AUTOBUILD_PLATFORM" == "linux64" ]]; then
+            cef_build_target="cefsimple"
+        fi
 
         # The main build script that does everything and based on command line parameter
         # (--client-distrib) also generates the distributable packages just like we used
@@ -175,7 +180,8 @@ case "$AUTOBUILD_PLATFORM" in
             --no-debug-tests \
             --no-release-tests \
             --distrib-subdir="$cef_distrib_subdir" \
-            --with-pgo-profiles
+            --with-pgo-profiles \
+            --build-target="$cef_build_target"
 
         # copy over the bits of the build we need to package
         cp -R "$cef_build_dir/code/chromium_git/chromium/src/cef/binary_distrib/$cef_distrib_subdir/" "$cef_stage_dir/"
@@ -200,7 +206,7 @@ case "$AUTOBUILD_PLATFORM" in
         "$stage/version" > "$stage/version.txt"
     ;;
 
-    linux*)
+    *)
         echo "This project is not currently supported for $AUTOBUILD_PLATFORM" 1>&2 ; exit 1
     ;;
 esac

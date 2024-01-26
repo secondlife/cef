@@ -60,7 +60,7 @@
           <key>name</key>
           <string>darwin64</string>
         </map>
-        <key>linux</key>
+        <key>linux64</key>
         <map>
           <key>build_directory</key>
           <string>stage</string>
@@ -81,7 +81,7 @@
             <string>resources/*</string>
           </array>
           <key>name</key>
-          <string>linux</string>
+          <string>linux64</string>
         </map>
         <key>windows</key>
         <map>

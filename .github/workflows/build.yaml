@@ -4,7 +4,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-large]
+        os: [windows-large, linux-large]
         addrsize: ["64"]
         include:
           - os: macos
