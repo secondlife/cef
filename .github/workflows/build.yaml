@@ -15,6 +15,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 900
     steps:
+      - name: Setup linux dependencies
+        if: matrix.os == 'linux-large'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install gperf libcups2-dev python3-bs4 python3-html5lib
       - uses: secondlife/action-autobuild@v3
         with:
           addrsize: ${{ matrix.addrsize }}
