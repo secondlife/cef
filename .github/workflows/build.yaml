@@ -4,12 +4,13 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-large, linux-large]
+        # os: [windows-large, linux-large]
+        os: [linux-large]
         addrsize: ["64"]
-        include:
-          - os: macos
-            tag: self-hosted
-            addrsize: "64"
+        # include:
+        #   - os: macos
+        #     tag: self-hosted
+        #     addrsize: "64"
     continue-on-error: true
     runs-on: ${{ matrix.os }}
     timeout-minutes: 900
