@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get -y install gperf libcups2-dev python3-bs4 python3-html5lib
+          sudo apt-get -y install gperf libcups2-dev python3-bs4 python3-html5lib libxkbcommon-x11-dev libgtkglext1-dev
       - uses: secondlife/action-autobuild@v3
         with:
           addrsize: ${{ matrix.addrsize }}
