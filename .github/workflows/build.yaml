@@ -11,7 +11,6 @@ jobs:
         #   - os: macos
         #     tag: self-hosted
         #     addrsize: "64"
-    continue-on-error: true
     runs-on: ${{ matrix.os }}
     timeout-minutes: 900
     steps:
