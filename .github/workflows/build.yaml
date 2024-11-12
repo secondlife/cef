@@ -1,25 +1,25 @@
 name: Build
 on: [push]
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [windows-large]
-        addrsize: ["64"]
-        include:
-          - os: macos
-            tag: self-hosted
-            addrsize: "64"
-    continue-on-error: true
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 900
-    steps:
-      - uses: secondlife/action-autobuild@v4
-        with:
-          addrsize: ${{ matrix.addrsize }}
-  release:
-    needs: build
-    runs-on: [ubuntu-latest]
-    if: startsWith(github.ref, 'refs/tags/v')
-    steps:
-      - uses: secondlife/action-autobuild-release@v3
+    build:
+        strategy:
+            matrix:
+                os: [windows-xlarge]
+                addrsize: ['64']
+                include:
+                    - os: macos
+                      tag: self-hosted
+                      addrsize: '64'
+        continue-on-error: true
+        runs-on: ${{ matrix.os }}
+        timeout-minutes: 900
+        steps:
+            - uses: secondlife/action-autobuild@v4
+              with:
+                  addrsize: ${{ matrix.addrsize }}
+    release:
+        needs: build
+        runs-on: [ubuntu-latest]
+        if: startsWith(github.ref, 'refs/tags/v')
+        steps:
+            - uses: secondlife/action-autobuild-release@v3
