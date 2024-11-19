@@ -3,24 +3,15 @@ on: [push]
 jobs:
   build:
     strategy:
-      fail-fast: false
       matrix:
-        os: [windows-xlarge]
-        addrsize: ["64"]
-        include:
-          - os: macos
-            tag: self-hosted
-            addrsize: "64"
-    continue-on-error: true
+        os: [macos-15-xlarge]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 900
     steps:
       - uses: secondlife/action-autobuild@v4
-        with:
-          addrsize: ${{ matrix.addrsize }}
   release:
     needs: build
     runs-on: [ubuntu-latest]
     if: startsWith(github.ref, 'refs/tags/v')
+    timeout-minutes: 1500
     steps:
       - uses: secondlife/action-autobuild-release@v3
