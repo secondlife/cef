@@ -31,8 +31,8 @@ cef_stage_dir="${stage}/cef"
 # The relationship to Chrome and the versions of Chromium/CEF is complex and
 # can make it difficult to find the branch number to use. This page can help:
 # https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding
-# E.G. Branch 5993 represents Chromium/CEF 118.x
-cef_branch_number=5993
+# E.G. Branch 7258 represents Chromium/CEF 139.x
+cef_branch_number=7258
 
 # Turn on the proprietary codec support (the main reason for building from source vs using
 # the Spotify open source builds here https://cef-builds.spotifycdn.com/index.html)
@@ -93,7 +93,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Remove files from the raw CEF build that we do not use
         rm -rf "tests"
-        rm "Release/cef_sandbox.lib"
+        rm -f "Release/cef_sandbox.lib"
 
         # licence file
         mkdir -p "${stage}/LICENSES"
@@ -185,7 +185,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Remove files from the raw CEF build that we do not use
         rm -rf "tests"
-        rm "Release/cef_sandbox.a"
+        rm -f "Release/cef_sandbox.a"
 
         # licence file
         mkdir -p "${stage}/LICENSES"
