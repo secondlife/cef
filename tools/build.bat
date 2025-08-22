@@ -177,6 +177,7 @@ cd %ROOT_CODE_DIRECTORY%\chromium_git\chromium\src\cef
  --depot-tools-dir=%ROOT_CODE_DIRECTORY%\depot_tools^
  --branch=%BRANCH%^
  --with-pgo-profiles^
+ --no-chromium-history^
  --client-distrib^
  --distrib-subdir=%CEF_DISTRIB_SUBDIR%^
  --force-clean^

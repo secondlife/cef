@@ -3,7 +3,7 @@
 cd "$(dirname "$0")"
 
 # turn on verbose debugging output for parabuild logs.
-exec 4>&1; export BASH_XTRACEFD=4; set -x
+# exec 4>&1; export BASH_XTRACEFD=4; set -x
 
 # make errors fatal
 set -e
@@ -115,6 +115,9 @@ case "$AUTOBUILD_PLATFORM" in
     ;;
 
     darwin64)
+	    # setup SDKROOT environment variable per CEF automated build instructions for mac
+        export SDKROOT=$(xcrun -show-sdk-path -sdk macosx)
+	
         # the directory where CEF is built. The documentation suggests that on
         # Windows at least, this shouldn't be in a subdirectory since the
         # complex build process generates enormous path names. This means we
@@ -128,6 +131,7 @@ case "$AUTOBUILD_PLATFORM" in
 
         # Clone the Git repo with the Chromium/CEF build tools
         cd "$cef_build_dir/code"
+        rm -rf depot_tools
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 
         # Grab the main build script (-k or --insecure to bypass curl failing on team city host)
@@ -152,52 +156,79 @@ case "$AUTOBUILD_PLATFORM" in
         # create .tar.bz2 format package archives
         export CEF_ARCHIVE_FORMAT=tar.bz2
 
-        # (CEF author mgreenblat asserts this allows for intel build on arm macs)
-        export CEF_ENABLE_AMD64=1
-
         # the location of the distributable files is based on the long, complex CEF/Chromium
         # version numbers and that makes it difficult to deduce and find so we invoke the
         # automate-git.py option to set the sub-dir ourselves
-        cef_distrib_subdir="cef_binary_macosx"
+        cef_distrib_subdir_x64="cef_binary_macosx_x64"
 
         # The main build script that does everything and based on command line parameter
         # (--client-distrib) also generates the distributable packages just like we used
         # to take from Spotify. Note too that unlike the Windows version, we always invoke
         # the 64bit command line parameter
         cd "$cef_build_dir/code/chromium_git"
-        python3 ../automate/automate-git.py \
+        # (CEF author mgreenblat asserts this allows for intel build on arm macs)
+        export CEF_ENABLE_AMD64=1
+        python ../automate/automate-git.py \
             --download-dir="$cef_build_dir/code/chromium_git" \
             --depot-tools-dir="$cef_build_dir/code/depot_tools" \
             --branch="$cef_branch_number" \
             --client-distrib \
+            --force-clean \
             --x64-build \
             --no-debug-build \
             --no-debug-tests \
             --no-release-tests \
-            --distrib-subdir="$cef_distrib_subdir" \
-            --with-pgo-profiles
+            --with-pgo-profiles \
+			--no-chromium-history \
+            --distrib-subdir="$cef_distrib_subdir_x64"
 
         # copy over the bits of the build we need to package
-        cp -R "$cef_build_dir/code/chromium_git/chromium/src/cef/binary_distrib/$cef_distrib_subdir/" "$cef_stage_dir/"
+        mkdir -p "$cef_stage_dir/x86_64/"
+        cp -R "$cef_build_dir/code/chromium_git/chromium/src/cef/binary_distrib/$cef_distrib_subdir_x64/"* "$cef_stage_dir/x86_64/"
+
+        # (CEF author mgreenblat asserts this allows for arm builds on intel macs)
+        export CEF_ENABLE_ARM64=1
+        cef_distrib_subdir_arm64="cef_binary_macosx_arm64"
+
+        python ../automate/automate-git.py \
+            --download-dir="$cef_build_dir/code/chromium_git" \
+            --depot-tools-dir="$cef_build_dir/code/depot_tools" \
+            --branch="$cef_branch_number" \
+            --client-distrib \
+            --force-clean \
+            --arm64-build \
+            --no-debug-build \
+            --no-debug-tests \
+            --no-release-tests \
+            --with-pgo-profiles \
+			--no-chromium-history \
+            --distrib-subdir="$cef_distrib_subdir_arm64"
+
+        # copy over the bits of the build we need to package
+        mkdir -p "$cef_stage_dir/arm64/"
+        cp -R "$cef_build_dir/code/chromium_git/chromium/src/cef/binary_distrib/$cef_distrib_subdir_arm64/"* "$cef_stage_dir/arm64/"
 
         # return to the directory above where we built CEF
         cd "${cef_stage_dir}"
 
         # Remove files from the raw CEF build that we do not use
-        rm -rf "tests"
-        rm -f "Release/cef_sandbox.a"
+        rm -rf "x86_64/tests"
+        rm -f "x86_64/Release/cef_sandbox.a"
+        rm -rf "arm64/tests"
+        rm -f "arm64/Release/cef_sandbox.a"
 
         # licence file
         mkdir -p "${stage}/LICENSES"
-        cp "${cef_stage_dir}/LICENSE.txt" "$stage/LICENSES/cef.txt"
+        cp "${cef_stage_dir}/x86_64/LICENSE.txt" "$stage/LICENSES/cef.txt"
 
         # write version using original CEF package includes
-        g++ \
+        clang++ \
+            -I "$cef_stage_dir/x86_64/include/" \
             -I "$cef_stage_dir/include" \
             -I "$cef_stage_dir/" \
             -o "$stage/version" \
             "$top/version.cpp"
-        "$stage/version" > "$stage/version.txt"
+        "$stage/version" > "$stage/VERSION.txt"
     ;;
 
     linux*)
