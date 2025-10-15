@@ -11,3 +11,11 @@ This repository contains the Linden Lab [autobuild](https://pypi.org/project/aut
 ___
 
 You will also find a batch file and shell scrfipt in the `tools` directory for building CEF from source. Rather than have documentation here get out of date, you should look in the source code of those scripts - there are plenty of comments and it should be straightforward to follow.
+
+## Linux Build
+
+* Setup standard autobuild build environment
+
+* Install chromium build dependencies via `https://source.chromium.org/chromium/chromium/src/+/master:build/install-build-deps.py`
+
+* `autobuild build -A64`
